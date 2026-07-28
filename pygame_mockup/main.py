@@ -39,7 +39,7 @@ if __name__ == '__main__':
     pygame.init()
     
     window = pygame.display.set_mode((800, 800))
-    window.fill((255, 255, 255))
+    window.fill((0, 0, 0))
     pygame.display.set_caption("Spotify LED Mockup")
 
 
@@ -53,17 +53,21 @@ if __name__ == '__main__':
                 running = False
 
             if event.type == call_event:
-                current_song_id, name, image_url = check_current_song(access_token)
-                print(f"Current song: {name} (ID: {current_song_id})")
-                
-                if  current_song_id != saved_song_id:
-                    img = requests.get(image_url, stream=True).content
-                    resize_image_plain(Image.open(io.BytesIO(img)), "images/current_song.png", (MATRIX_SIZE, MATRIX_SIZE))
+                try:
+                    current_song_id, name, image_url = check_current_song(access_token)
+                    if current_song_id is None or name is None or image_url is None:
+                        access_token = get_access_token()
+                        current_song_id, name, image_url = check_current_song(access_token)
+                        
+                    print(f"Current song: {name} (ID: {current_song_id})")
                     
-                    grid = convert_image_to_grid("images/current_song.png")
-                # Here you would fetch the album art and update the grid
-                # For now, we just print the song info
-                
+                    if  current_song_id != saved_song_id:
+                            img = requests.get(image_url, stream=True).content
+                            resize_image_plain(Image.open(io.BytesIO(img)), "images/current_song.png", (MATRIX_SIZE, MATRIX_SIZE))
+                            
+                            grid = convert_image_to_grid("images/current_song.png")
+                except Exception as e:
+                    print(f"Error processing song data: {e}")
                 
         for i in range(MATRIX_SIZE):
             for j in range(MATRIX_SIZE):

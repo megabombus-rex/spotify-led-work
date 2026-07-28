@@ -29,6 +29,9 @@ def get_current_song(access_token):
     if resp.status_code == 204:
         return None
     data = resp.json()
+    if not data.get("item"):
+        print("No item in response data:", data)
+        return None, None, None
     item = data["item"]
     return item["id"], item["name"], item["album"]["images"][0]["url"]
 
