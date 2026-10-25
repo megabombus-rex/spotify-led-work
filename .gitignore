@@ -176,3 +176,12 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,dotenv
+
+.pio
+.micro_work/LED-spotify/vscode/.browse.c_cpp.db*
+.micro_work/LED-spotify/vscode/c_cpp_properties.json
+.micro_work/LED-spotify/vscode/launch.json
+.micro_work/LED-spotify/vscode/ipch
+
+
+.micro_work/LED-spotify/include/secrets.h
